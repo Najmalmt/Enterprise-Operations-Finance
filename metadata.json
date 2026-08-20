@@ -1,0 +1,6 @@
+{
+  "name": "NEXORA - Enterprise Operations & Finance",
+  "description": "Enterprise IT Company Management & Finance Dashboard for operations, HR, payroll, projects, expenses, and approvals with Supabase backend integration.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
