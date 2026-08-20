@@ -324,6 +324,16 @@ export const Header: React.FC<HeaderProps> = ({
               <div className="py-1">
                 <button
                   onClick={() => {
+                    onNavigate('/');
+                    setIsProfileOpen(false);
+                  }}
+                  className="w-full px-4 py-2 text-xs text-[#111827] hover:bg-[#f3f4f6] flex items-center gap-2.5 font-medium"
+                >
+                  <Layers className="w-3.5 h-3.5 text-zinc-600" />
+                  Public Landing Page
+                </button>
+                <button
+                  onClick={() => {
                     onNavigate('/employees');
                     setIsProfileOpen(false);
                   }}

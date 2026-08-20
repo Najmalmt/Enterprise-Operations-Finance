@@ -24,7 +24,8 @@ import {
   ShieldAlert,
   Sparkles,
   User as UserIcon,
-  HelpCircle
+  HelpCircle,
+  Globe
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useData } from '../../context/DataContext';
@@ -302,15 +303,35 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
 
         {/* Footer info in sidebar */}
-        {!isCollapsed && (
-          <div className="p-3 border-t border-[#1e2633] bg-[#080b10]/60 shrink-0">
-            <div className="flex items-center justify-between px-2 py-1 text-[11px] text-zinc-400">
+        {!isCollapsed ? (
+          <div className="p-3 border-t border-[#1e2633] bg-[#080b10]/60 shrink-0 space-y-2">
+            <button
+              onClick={() => handleItemClick('/')}
+              className="w-full flex items-center justify-between px-2 py-1.5 rounded-lg text-xs font-medium text-zinc-300 hover:text-white hover:bg-white/5 transition-colors cursor-pointer border border-[#1e2633]"
+            >
+              <span className="flex items-center gap-2">
+                <Globe className="w-3.5 h-3.5 text-zinc-400" />
+                <span>Public Landing Page</span>
+              </span>
+              <span className="text-[10px] font-mono text-zinc-400">Exit Demo →</span>
+            </button>
+            <div className="flex items-center justify-between px-2 py-0.5 text-[11px] text-zinc-400">
               <span className="flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
                 System Operational
               </span>
               <span className="text-[10px] font-mono text-zinc-400">v3.4-PROD</span>
             </div>
+          </div>
+        ) : (
+          <div className="p-2 border-t border-[#1e2633] flex justify-center shrink-0">
+            <button
+              onClick={() => handleItemClick('/')}
+              title="Public Landing Page"
+              className="p-2 rounded-lg text-zinc-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+            >
+              <Globe className="w-4 h-4" />
+            </button>
           </div>
         )}
       </aside>

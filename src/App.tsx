@@ -4,8 +4,10 @@ import { DataProvider, useData } from './context/DataContext';
 import { Sidebar } from './components/layout/Sidebar';
 import { Header } from './components/layout/Header';
 import { CommandPalette } from './components/layout/CommandPalette';
+import { UserRole } from './types';
 
 // Pages
+import { LandingPage } from './pages/LandingPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { EmployeePortalPage } from './pages/EmployeePortalPage';
 import { EmployeesPage } from './pages/EmployeesPage';
@@ -20,8 +22,9 @@ import { ShieldAlert, ArrowRight, Sparkles } from 'lucide-react';
 import { Button } from './components/common/Button';
 
 const AppContent: React.FC = () => {
-  const { role, hasAccess } = useAuth();
-  const [currentPath, setCurrentPath] = useState(() => role === 'Employee' ? '/workspace' : '/dashboard');
+  const { role, hasAccess, switchRole } = useAuth();
+  // Default entry point is the public landing page '/'
+  const [currentPath, setCurrentPath] = useState<string>('/');
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
@@ -31,6 +34,37 @@ const AppContent: React.FC = () => {
     setIsMobileSidebarOpen(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  const handleExploreDemo = (targetPath?: string) => {
+    if (targetPath && targetPath !== '/') {
+      setCurrentPath(targetPath);
+    } else {
+      setCurrentPath(role === 'Employee' ? '/workspace' : '/dashboard');
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleExploreRoleDemo = (targetRole: UserRole, targetPath?: string) => {
+    switchRole(targetRole);
+    if (targetPath) {
+      setCurrentPath(targetPath);
+    } else if (targetRole === 'Employee') {
+      setCurrentPath('/workspace');
+    } else {
+      setCurrentPath('/dashboard');
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // If path is root '/' or '/landing', render the public landing page
+  if (currentPath === '/' || currentPath === '/landing') {
+    return (
+      <LandingPage
+        onExploreDemo={handleExploreDemo}
+        onExploreRoleDemo={handleExploreRoleDemo}
+      />
+    );
+  }
 
   const renderAccessDenied = (requiredRole: string) => (
     <div className="p-8 sm:p-12 bg-white rounded-2xl border border-[#e5e7eb] shadow-sm max-w-xl mx-auto my-12 text-center space-y-4">
@@ -53,7 +87,7 @@ const AppContent: React.FC = () => {
 
   const renderActivePage = () => {
     // If standard employee tries to view default dashboard, show workspace
-    if (role === 'Employee' && (currentPath === '/dashboard' || currentPath === '/')) {
+    if (role === 'Employee' && currentPath === '/dashboard') {
       return <EmployeePortalPage initialTab="overview" />;
     }
 
